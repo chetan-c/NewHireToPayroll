@@ -1,5 +1,6 @@
 
 # NewHireToPayroll
+
 ### Workday HCM to Payroll Integration Simulation
 
 A Python-based employee integration project that simulates retrieving new-hire records from Workday HCM, validating and transforming employee data, and transferring it to a payroll system through REST APIs.
@@ -37,6 +38,28 @@ flowchart TD
     B --> J["Audit Logging"]
     B --> K["Retry and Recovery"]
 ```
+
+## Screenshots
+
+### Mock Workday API
+
+![Mock Workday API](screenshots/workday-api.png)
+
+### API Documentation
+
+![Swagger UI](screenshots/swagger-ui.png)
+
+### API Health Check
+
+![Health Check](screenshots/health-check.png)
+
+### Automated Tests
+
+![Pytest Results](screenshots/pytest-results.png)
+
+### GitHub Actions CI
+
+![GitHub Actions](screenshots/github-actions.png)
 
 ## Key Features
 
@@ -89,6 +112,7 @@ NewHireToPayroll/
 │   └── db_connection_check.py
 │
 ├── integration/
+│   ├── __init__.py
 │   ├── send_employee.py
 │   ├── validator.py
 │   ├── logger_config.py
@@ -99,6 +123,7 @@ NewHireToPayroll/
 │   ├── workday_client.py
 │   ├── workday_config.py
 │   ├── workday_mapping.py
+│   ├── test_workday_connection.py
 │   └── transfer_workday_to_payroll.py
 │
 ├── tests/
@@ -111,6 +136,13 @@ NewHireToPayroll/
 │   ├── test_workday_config.py
 │   ├── test_workday_mapping.py
 │   └── test_workday_pagination.py
+│
+├── screenshots/
+│   ├── github-actions.png
+│   ├── health-check.png
+│   ├── pytest-results.png
+│   ├── swagger-ui.png
+│   └── workday-api.png
 │
 ├── logs/
 ├── .github/
@@ -152,9 +184,15 @@ pip install -r requirements.txt
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the project root.
+Create your local `.env` file from the example:
 
-Configure the following variables using your own local credentials:
+```powershell
+Copy-Item .env.example .env
+```
+
+Edit `.env` and configure your own database password and API key.
+
+The configuration includes:
 
 ```env
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/newhire_payroll
@@ -171,13 +209,13 @@ Never commit your `.env` file or expose API keys and database passwords.
 
 Open separate terminals from the project root.
 
-Mock Workday API:
+**Mock Workday API:**
 
 ```bash
 uvicorn main:app --reload --app-dir mock-workday-api --port 8001
 ```
 
-Payroll API:
+**Payroll API:**
 
 ```bash
 uvicorn main:app --reload --app-dir payroll-api --port 8000
@@ -185,7 +223,7 @@ uvicorn main:app --reload --app-dir payroll-api --port 8000
 
 ### 6. Run the integration
 
-First, retrieve workers from Mock Workday:
+Retrieve workers from Mock Workday:
 
 ```bash
 python -m integration.test_workday_connection
@@ -230,7 +268,7 @@ Example execution:
 | Failed records | 0 |
 | Execution status | SUCCESS |
 
-**Automated testing:** 26 tests passed, with one non-failing deprecation warning at the time of the last recorded full test run.
+**Automated testing:** 26 tests passed, with one non-failing deprecation warning in the latest recorded full test run.
 
 ## Security and Reliability
 
