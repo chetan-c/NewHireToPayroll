@@ -9,3 +9,4 @@ logs/
 .pytest_cache/
 .vscode/
 .idea/
+!.env.example

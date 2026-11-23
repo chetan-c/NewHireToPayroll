@@ -1,110 +1,75 @@
 
-
 # NewHireToPayroll
+### Workday HCM to Payroll Integration Simulation
 
-![CI](https://github.com/chetan-c/NewHireToPayroll/actions/workflows/tests.yml/badge.svg)
+A Python-based employee integration project that simulates retrieving new-hire records from Workday HCM, validating and transforming employee data, and transferring it to a payroll system through REST APIs.
 
-**Automated Employee Onboarding to Payroll Integration — Python, FastAPI and PostgreSQL**
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Pytest](https://img.shields.io/badge/Tests-26%20passed-success)
+![Integration](https://img.shields.io/badge/Integration-Workday%20Simulation-orange)
 
-## Overview
+---
 
-NewHireToPayroll is a Python-based integration project that simulates transferring new employee information from an HR system (Workday HCM scenario) to an external payroll system.
+## Project Overview
 
-It demonstrates how an integration workflow can validate employee information, transform JSON payloads, communicate with REST APIs, store payroll records, handle failures, retry requests, and maintain execution audit logs.
+NewHireToPayroll demonstrates an employee onboarding integration workflow.
 
-**Note:** This is currently a local simulation. It is not connected to a live Workday HCM tenant or Workday Orchestrate.
+The application retrieves worker information from a locally hosted Mock Workday HCM REST API, validates and maps the data, and sends new employee records to a simulated payroll API.
 
-## Architecture
+PostgreSQL stores employee records, while audit logs and execution tracking provide traceability.
 
-
+**Important:** This project currently uses a Mock Workday API for development and testing. It is not connected to a live Workday tenant.
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    A["Workday HCM<br/>(Simulated Employee Source)"]
-    B["Python Integration Client"]
-    C["Employee Validation"]
-    D["Data Transformation"]
-    E["FastAPI Payroll API"]
-    F[("PostgreSQL Database")]
-    G["Audit Logging"]
-    H["Execution Tracking"]
-    I["Retry & Recovery"]
-
-    A --> B
-    B --> C
-    C -->|Valid| D
-    C -->|Invalid| G
-    D --> E
-    E -->|Success| F
-    E -->|Duplicate / Failure| G
-    F --> G
-    G --> H
-    E --> I
-    I --> E
+    A["Mock Workday HCM API"] --> B["Python Integration"]
+    B --> C["Retrieve Worker Records"]
+    C --> D["Validate Employee Data"]
+    D --> E["Map Workday Data to Payroll Format"]
+    E --> F["Duplicate Detection"]
+    F --> G["Payroll REST API - FastAPI"]
+    G --> H[("PostgreSQL Database")]
+    B --> I["Execution Tracking"]
+    B --> J["Audit Logging"]
+    B --> K["Retry and Recovery"]
 ```
-
-**Note:** Workday HCM is simulated using local employee JSON data. This project is not connected to a live Workday tenant.
-
-
-
-```text
-HR Source (Simulated Workday HCM)
-              |
-              v
-      Employee JSON Data
-              |
-              v
-      Python Integration
-              |
-       Employee Validation
-              |
-       Data Transformation
-              |
-         REST API POST
-              |
-              v
-       FastAPI Payroll API
-              |
-              v
-       PostgreSQL Database
-              |
-       +------+------+
-       |             |
-    Audit Logs   Execution Tracking
-       |
-       v
- Retry and Recovery Handling
-```
-
-## Technology Stack
-
-- **Language:** Python
-- **API Framework:** FastAPI
-- **Database:** PostgreSQL
-- **API Communication:** REST API, HTTP, JSON
-- **Libraries:** Requests, Psycopg, Pydantic, Python-dotenv
-- **Testing:** Pytest, HTTPX
-- **Tools:** VS Code, Postman, Git and GitHub
 
 ## Key Features
 
-- Employee onboarding data processing
-- Employee data validation
-- JSON payload transformation
-- REST API integration
-- API-key authentication
-- PostgreSQL payroll record storage
-- Duplicate employee prevention
-- Configurable retry mechanism
-- Exponential backoff
-- Failed employee recovery
-- Audit logging
-- Execution ID tracking
-- Batch employee processing
-- Support alerts through application logs
-- Automated integration and API tests
+- Mock Workday HCM REST API.
+- HTTP-based worker retrieval.
+- Pagination support.
+- Employee data validation.
+- Data mapping and transformation.
+- Payroll REST API using FastAPI.
+- API-key authentication.
+- PostgreSQL database integration.
+- Duplicate employee prevention.
+- Dry-run and execution modes.
+- Retry and failed-record recovery.
+- Execution tracking with unique execution IDs.
+- Audit logging.
+- Automated testing with Pytest.
+- GitHub Actions CI workflow.
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python | Integration logic |
+| FastAPI | Mock Workday and Payroll APIs |
+| REST APIs | System communication |
+| Requests | HTTP client |
+| PostgreSQL | Persistent storage |
+| Psycopg | PostgreSQL connectivity |
+| Pydantic | Request validation |
+| Pytest | Automated testing |
+| Git & GitHub | Version control |
+| GitHub Actions | Continuous integration |
 
 ## Project Structure
 
@@ -114,10 +79,14 @@ NewHireToPayroll/
 ├── sample-data/
 │   └── employee.json
 │
+├── mock-workday-api/
+│   └── main.py
+│
 ├── payroll-api/
 │   ├── main.py
 │   ├── database.py
-│   └── test_db.py
+│   ├── audit.py
+│   └── db_connection_check.py
 │
 ├── integration/
 │   ├── send_employee.py
@@ -126,18 +95,31 @@ NewHireToPayroll/
 │   ├── audit_client.py
 │   ├── notification.py
 │   ├── execution_tracker.py
-│   └── retry_failed.py
+│   ├── retry_failed.py
+│   ├── workday_client.py
+│   ├── workday_config.py
+│   ├── workday_mapping.py
+│   └── transfer_workday_to_payroll.py
 │
 ├── tests/
 │   ├── test_validator.py
 │   ├── test_api.py
 │   ├── test_execution_tracker.py
 │   ├── test_integration_flow.py
-│   └── test_recovery.py
+│   ├── test_recovery.py
+│   ├── test_workday_client.py
+│   ├── test_workday_config.py
+│   ├── test_workday_mapping.py
+│   └── test_workday_pagination.py
 │
 ├── logs/
-├── .env
+├── .github/
+│   └── workflows/
+│       └── tests.yml
+│
+├── .env.example
 ├── .gitignore
+├── requirements.txt
 └── README.md
 ```
 
@@ -146,7 +128,7 @@ NewHireToPayroll/
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/chetan-c/NewHireToPayroll.git
 cd NewHireToPayroll
 ```
 
@@ -159,136 +141,144 @@ python -m venv .venv
 Activate it on Windows:
 
 ```powershell
-.venv\Scripts\activate
+.venv\Scripts\Activate.ps1
 ```
 
 ### 3. Install dependencies
 
 ```bash
-pip install fastapi uvicorn "psycopg[binary]" python-dotenv requests pytest httpx
+pip install -r requirements.txt
 ```
 
 ### 4. Configure environment variables
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root.
 
-```dotenv
+Configure the following variables using your own local credentials:
+
+```env
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/newhire_payroll
 PAYROLL_API_URL=http://127.0.0.1:8000/payroll/employees
-PAYROLL_API_KEY=YOUR_GENERATED_SECRET_KEY
+PAYROLL_API_KEY=YOUR_API_KEY
 MAX_ATTEMPTS=3
 RETRY_BASE_DELAY=2
+WORKDAY_BASE_URL=http://127.0.0.1:8001
 ```
 
-Replace the placeholders with your local configuration.
+Never commit your `.env` file or expose API keys and database passwords.
 
-### 5. Configure PostgreSQL
+### 5. Start the local APIs
 
-Create a database named:
+Open separate terminals from the project root.
 
-```sql
-CREATE DATABASE newhire_payroll;
-```
-
-Create the required `employees`, `integration_logs`, and `integration_executions` tables using the SQL schema provided in the project setup.
-
-### 6. Start the payroll API
-
-Open a terminal:
-
-```powershell
-cd payroll-api
-uvicorn main:app --reload
-```
-
-Health check:
-
-```text
-http://127.0.0.1:8000/health
-```
-
-API documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-### 7. Run the integration
-
-Open another terminal from the project root:
-
-```powershell
-python integration/send_employee.py
-```
-
-### 8. Run failed employee recovery
-
-```powershell
-python integration/retry_failed.py
-```
-
-## Testing
-
-Run the complete automated test suite:
+Mock Workday API:
 
 ```bash
-python -m pytest -v
+uvicorn main:app --reload --app-dir mock-workday-api --port 8001
 ```
 
-The tests cover:
+Payroll API:
 
-- Employee validation
-- API health and authentication
-- Execution tracking
-- Successful employee processing
-- Duplicate employee handling
-- Retry after temporary server errors
-- Failure after retry exhaustion
-- Invalid employee rejection
-- Recovery and duplicate reconciliation
+```bash
+uvicorn main:app --reload --app-dir payroll-api --port 8000
+```
 
-## Security
+### 6. Run the integration
 
-- Store API keys and database credentials in `.env`.
-- Do not commit `.env` to GitHub.
-- Use fictional employee information for testing.
-- Do not include real employee or payroll records in the repository.
+First, retrieve workers from Mock Workday:
 
-## Project Status
+```bash
+python -m integration.test_workday_connection
+```
 
-The local integration workflow, PostgreSQL persistence, retry and recovery mechanisms, and automated tests have been implemented and tested.
+Run a safe dry-run:
 
-**Future enhancements:**
-- Connect to an authorized Workday sandbox tenant.
-- Implement actual Workday integration using supported Workday services.
-- Explore Workday Orchestrate for workflow automation.
-- Add email or messaging-based support notifications.
-- Add a monitoring dashboard.
+```bash
+python -m integration.transfer_workday_to_payroll
+```
+
+Execute the transfer:
+
+```bash
+python -m integration.transfer_workday_to_payroll --execute
+```
+
+### 7. Run automated tests
+
+```bash
+pytest -v
+```
+
+## Verified Results
+
+The project has successfully demonstrated:
+
+- Retrieval of five worker records from the Mock Workday API.
+- Pagination across multiple API requests.
+- Detection of four existing payroll employees.
+- Successful transfer of one new employee.
+- Prevention of duplicate employee creation.
+- PostgreSQL execution tracking and audit records.
+
+Example execution:
+
+| Metric | Result |
+|---|---:|
+| Workers retrieved | 5 |
+| Employees created | 1 |
+| Duplicates skipped | 4 |
+| Failed records | 0 |
+| Execution status | SUCCESS |
+
+**Automated testing:** 26 tests passed, with one non-failing deprecation warning at the time of the last recorded full test run.
+
+## Security and Reliability
+
+- API-key authentication for payroll endpoints.
+- Environment variables for sensitive configuration.
+- `.gitignore` protection for local secrets.
+- Input validation before employee processing.
+- Duplicate prevention using employee identifiers.
+- Error handling and retry/recovery mechanisms.
+- Execution IDs and audit records for traceability.
+
+## Current Project Status
+
+This is a working local integration simulation.
+
+The Mock Workday API uses sample employee data and a local development token. Actual Workday tenant authentication, tenant-specific API configuration, and validation against a real Workday response remain future work pending authorized tenant access.
+
+## Future Enhancements
+
+- Connect to an authorized Workday tenant.
+- Implement tenant-specific authentication.
+- Adapt worker mapping to actual Workday API responses.
+- Add real-time integration monitoring.
+- Integrate email or messaging notifications.
 
 ## Learning Outcomes
 
-This project demonstrates practical understanding of:
+Through this project, I gained practical experience with:
 
-- Enterprise integration concepts
-- REST API development and consumption
-- Data validation and transformation
-- Python backend development
-- PostgreSQL database integration
-- Error handling and retry strategies
-- Audit logging and execution monitoring
-- Automated testing
+- Enterprise system integration concepts.
+- REST API development and consumption.
+- Python-based data transformation.
+- Database operations using PostgreSQL.
+- Authentication and configuration management.
+- Error handling, retry mechanisms, and recovery.
+- Audit logging and execution monitoring.
+- Automated testing and CI/CD.
 
+---
 
-## Screenshots
+## Author
 
-### API Documentation
-![Swagger UI](screenshots/swagger-ui.png)
+**Chetan Kamble**
 
-### API Health Check
-![Health Check](screenshots/health-check.png)
+- GitHub: https://github.com/chetan-c
+- LinkedIn: https://www.linkedin.com/in/chetan-kamble01/
+- Portfolio: https://chetan-c.github.io/PortFolio_/
 
-### GitHub Actions CI
-![GitHub Actions](screenshots/github-actions.png)
+---
 
-### Automated Tests
-![Pytest Results](screenshots/pytest-results.png)
+*Built as a hands-on enterprise integration learning project.*
