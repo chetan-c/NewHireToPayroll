@@ -1,4 +1,8 @@
+
+
 # NewHireToPayroll
+
+![CI](https://github.com/chetan-c/NewHireToPayroll/actions/workflows/tests.yml/badge.svg)
 
 **Automated Employee Onboarding to Payroll Integration — Python, FastAPI and PostgreSQL**
 
