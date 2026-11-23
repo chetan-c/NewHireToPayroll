@@ -11,6 +11,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: postgresql://postgres:ci_password@localhost:5432/newhire_payroll
+      PAYROLL_API_URL: http://127.0.0.1:8000/payroll/employees
+      PAYROLL_API_KEY: ci-test-key-not-real
+      MAX_ATTEMPTS: "3"
+      RETRY_BASE_DELAY: "2"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,5 +33,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run automated tests
-        run: |
-          pytest -v
+        run: pytest -v
