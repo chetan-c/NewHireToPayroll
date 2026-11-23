@@ -277,3 +277,18 @@ This project demonstrates practical understanding of:
 - Error handling and retry strategies
 - Audit logging and execution monitoring
 - Automated testing
+
+
+## Screenshots
+
+### API Documentation
+![Swagger UI](screenshots/swagger-ui.png)
+
+### API Health Check
+![Health Check](screenshots/health-check.png)
+
+### GitHub Actions CI
+![GitHub Actions](screenshots/github-actions.png)
+
+### Automated Tests
+![Pytest Results](screenshots/pytest-results.png)
