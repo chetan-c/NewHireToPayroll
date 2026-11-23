@@ -1,0 +1,58 @@
+
+[
+  {
+    "employeeId": "100245",
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "john.smith@example.com",
+    "department": "IT",
+    "jobTitle": "Software Engineer",
+    "hireDate": "2026-11-20",
+    "company": "ABC Technologies",
+    "location": "Bangalore",
+    "annualSalary": 1200000,
+    "payGroup": "Monthly"
+  },
+  {
+    "employeeId": "100246",
+    "firstName": "Sarah",
+    "lastName": "Johnson",
+    "email": "sarah.johnson@example.com",
+    "department": "HR",
+    "jobTitle": "HR Executive",
+    "hireDate": "2026-11-21",
+    "company": "ABC Technologies",
+    "location": "Pune",
+    "annualSalary": 600000,
+    "payGroup": "Monthly"
+  },
+  {
+    "employeeId": "100247",
+    "firstName": "David",
+    "lastName": "Wilson",
+    "email": "david.wilson@example.com",
+    "department": "Finance",
+    "jobTitle": "Accountant",
+    "hireDate": "2026-11-22",
+    "company": "ABC Technologies",
+    "location": "Mumbai",
+    "annualSalary": 750000,
+    "payGroup": "Monthly"
+  },
+{
+  "employeeId": "900001",
+  "firstName": "Test",
+  "lastName": "Employee",
+  "email": "test.employee@example.com",
+  "department": "Engineering",
+  "jobTitle": "Integration Tester",
+  "hireDate": "2026-11-23",
+  "company": "ABC Technologies",
+  "location": "Bangalore",
+  "annualSalary": 500000,
+  "payGroup": "Monthly"
+}
+  
+
+]
+
