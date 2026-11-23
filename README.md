@@ -16,6 +16,39 @@ It demonstrates how an integration workflow can validate employee information, t
 
 ## Architecture
 
+
+
+## Architecture
+
+```mermaid
+flowchart TD
+    A["Workday HCM<br/>(Simulated Employee Source)"]
+    B["Python Integration Client"]
+    C["Employee Validation"]
+    D["Data Transformation"]
+    E["FastAPI Payroll API"]
+    F[("PostgreSQL Database")]
+    G["Audit Logging"]
+    H["Execution Tracking"]
+    I["Retry & Recovery"]
+
+    A --> B
+    B --> C
+    C -->|Valid| D
+    C -->|Invalid| G
+    D --> E
+    E -->|Success| F
+    E -->|Duplicate / Failure| G
+    F --> G
+    G --> H
+    E --> I
+    I --> E
+```
+
+**Note:** Workday HCM is simulated using local employee JSON data. This project is not connected to a live Workday tenant.
+
+
+
 ```text
 HR Source (Simulated Workday HCM)
               |
