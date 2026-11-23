@@ -51,6 +51,20 @@
   "location": "Bangalore",
   "annualSalary": 500000,
   "payGroup": "Monthly"
+},
+
+{
+  "employeeId": "900002",
+  "firstName": "Alex",
+  "lastName": "Tester",
+  "email": "alex.tester@example.com",
+  "department": "Operations",
+  "jobTitle": "Payroll Analyst",
+  "hireDate": "2026-11-23",
+  "company": "ABC Technologies",
+  "location": "Bangalore",
+  "annualSalary": 450000,
+  "payGroup": "Monthly"
 }
   
 
